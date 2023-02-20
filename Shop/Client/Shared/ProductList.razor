@@ -1,4 +1,5 @@
 ﻿@using Shop.Shared
+
 @inject IProductService ProductService
 @implements IDisposable
 
@@ -20,7 +21,7 @@ else{
                 <MudStack>
                     <MudText Typo="Typo.h3" Align="Align.Start">@product.Title</MudText>
                     <MudText Typo="Typo.body1">@product.Description</MudText>
-                    <MudText Color="Color.Info">Price : @product.Price</MudText>
+                    <MudText Color="Color.Info">Price : @GetPriceText(product)</MudText>
                     </MudStack>
 
             </MudPaper>
@@ -41,5 +42,19 @@ else{
         ProductService.ProductsChanged -= StateHasChanged;
     }
 
+    private string GetPriceText(Product product)
+    {
+        var variants = product.Variants;
+        if (variants.Count == 0)
+        {
+            return string.Empty;
+        }
+        else if (variants.Count == 1)
+        {
+            return $"{variants[0].Price}";
+        }
+        decimal minPrice = variants.Min(p => p.Price);
+        return $"Starting at {minPrice}";
+    }
 }
 
