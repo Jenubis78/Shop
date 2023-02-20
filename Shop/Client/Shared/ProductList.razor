@@ -1,30 +1,36 @@
 ﻿@using Shop.Shared
-@inject HttpClient Http
+@inject IProductService ProductService
 <h3>ProductList</h3>
-
+@if (ProductService.Products == null || ProductService.Products.Count == 0)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+}
+else{
 <MudGrid>
-    @foreach (var product in Products)
+    @foreach (var product in ProductService.Products)
     {
         <MudItem xs="12">
             <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
-                <MudStack AlignItems="AlignItems.Center">
-                    <MudImage Src=@product.ImageUrl Width="200" Height="200" Class="rounded-lg ma-4"/>
-                    <MudText Typo="Typo.h3">@product.Title</MudText>
+                
+                <MudLink Href=@($"/product/{product.Id}")>
+                    <MudImage Src=@product.ImageUrl Width="200" Height="300" Class="rounded-lg ma-4" />
+                </MudLink>
+                <MudStack>
+                    <MudText Typo="Typo.h3" Align="Align.Start">@product.Title</MudText>
                     <MudText Typo="Typo.body1">@product.Description</MudText>
                     <MudText Color="Color.Info">Price : @product.Price</MudText>
-                </MudStack>
+                    </MudStack>
 
             </MudPaper>
         </MudItem>
     }
 </MudGrid>
-
+}
 @code {
-    private static List<Product> Products = new List<Product>();
+    
     protected override async Task OnInitializedAsync()
     {
-        var result = await Http.GetFromJsonAsync<List<Product>>("/api/Product");
-        if (result!= null) Products = result;
+        await ProductService.GetProducts();
 
     }
 

@@ -1,7 +1,10 @@
 global using Shop.Shared;
 global using Microsoft.EntityFrameworkCore;
 global using Shop.Server.Data;
+global using Shop.Server.Services.ProductService;
 using Microsoft.AspNetCore.ResponseCompression;
+using Shop.Server.Controllers;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +18,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 app.UseSwaggerUI();
@@ -42,5 +46,7 @@ app.UseRouting();
 app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
+
+
 
 app.Run();

@@ -10,25 +10,28 @@ namespace Shop.Server.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly IProductService _productService;
+        
 
-        public ProductController(DataContext context)
+        public ProductController(IProductService productService)
         {
-            _context = context;
+            _productService = productService;
+           
         }
         // GET: api/<ProductController>
         [HttpGet]
-        public async Task <ActionResult<List<Product>>>GetProducts()
+        public async Task <ActionResult<ServiceResponse<List<Product>>>>GetProducts()
         {
-            var products = await _context.Products.ToListAsync();
-            return Ok(products);
+            var result = await _productService.GetProductsAsync();
+            return Ok(result);
         }
 
         // GET api/<ProductController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{productId}")]
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProduct(int productId)
         {
-            return "value";
+            var result = await _productService.GetProductAsync(productId);
+            return Ok(result);
         }
 
         // POST api/<ProductController>
