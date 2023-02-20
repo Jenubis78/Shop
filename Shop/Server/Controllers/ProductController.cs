@@ -33,6 +33,12 @@ namespace Shop.Server.Controllers
             var result = await _productService.GetProductAsync(productId);
             return Ok(result);
         }
+        [HttpGet("category/{categoryUrl}")]
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProductsByCategoryUrl(string categoryUrl)
+        {
+            var result = await _productService.GetProductsByCategoryAsync(categoryUrl);
+            return Ok(result);
+        }
 
         // POST api/<ProductController>
         [HttpPost]

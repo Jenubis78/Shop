@@ -2,6 +2,7 @@ global using Shop.Shared;
 global using Microsoft.EntityFrameworkCore;
 global using Shop.Server.Data;
 global using Shop.Server.Services.ProductService;
+global using Shop.Server.Services.CategoryService;
 using Microsoft.AspNetCore.ResponseCompression;
 using Shop.Server.Controllers;
 
@@ -19,6 +20,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 var app = builder.Build();
 app.UseSwaggerUI();

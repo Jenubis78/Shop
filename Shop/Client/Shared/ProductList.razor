@@ -1,5 +1,7 @@
 ﻿@using Shop.Shared
 @inject IProductService ProductService
+@implements IDisposable
+
 <h3>ProductList</h3>
 @if (ProductService.Products == null || ProductService.Products.Count == 0)
 {
@@ -27,11 +29,16 @@ else{
 </MudGrid>
 }
 @code {
-    
+   
     protected override async Task OnInitializedAsync()
     {
-        await ProductService.GetProducts();
+        ProductService.ProductsChanged += StateHasChanged;
 
+    }
+
+    public void Dispose()
+    {
+        ProductService.ProductsChanged -= StateHasChanged;
     }
 
 }
