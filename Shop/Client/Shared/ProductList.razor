@@ -1,0 +1,32 @@
+﻿@using Shop.Shared
+@inject HttpClient Http
+<h3>ProductList</h3>
+
+<MudGrid>
+    @foreach (var product in Products)
+    {
+        <MudItem xs="12">
+            <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+                <MudStack AlignItems="AlignItems.Center">
+                    <MudImage Src=@product.ImageUrl Width="200" Height="200" Class="rounded-lg ma-4"/>
+                    <MudText Typo="Typo.h3">@product.Title</MudText>
+                    <MudText Typo="Typo.body1">@product.Description</MudText>
+                    <MudText Color="Color.Info">Price : @product.Price</MudText>
+                </MudStack>
+
+            </MudPaper>
+        </MudItem>
+    }
+</MudGrid>
+
+@code {
+    private static List<Product> Products = new List<Product>();
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Http.GetFromJsonAsync<List<Product>>("/api/Product");
+        if (result!= null) Products = result;
+
+    }
+
+}
+
