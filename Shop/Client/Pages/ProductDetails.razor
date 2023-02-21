@@ -14,42 +14,55 @@ else if (message != null)
 }
 else
 {
-    <MudGrid>
-            <MudItem xs="12">
+    
+            
             <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
-                <MudStack AlignItems="AlignItems.Center">
-                    
-                        <MudImage Src=@product.ImageUrl Width="400" Height="600" Class="rounded-lg ma-4" />
-                    
-                    
-                    <MudText Typo="Typo.h3">@product.Title</MudText>
-                        <MudText Typo="Typo.body1">@product.Description</MudText>
+                
+                <MudGrid>
+                    <MudItem xs="12" Class="align-center justify-center">
+                        <MudContainer MaxWidth="MaxWidth.Small">
+                        <MudImage ObjectPosition="ObjectPosition.Center" Src=@product.ImageUrl Width="400" Height="600" Class="rounded-lg ma-4 justify-content-center"/>
+                            </MudContainer>
+                    </MudItem>
+                    <MudItem xs="12" Class="align-center"  >
+                    <MudText Typo="Typo.h3" Align="Align.Center">@product.Title</MudText>
+                    <MudText Typo="Typo.body1">@product.Description</MudText>
+            </MudItem>
                         @if (product.Variants != null && product.Variants.Count > 0)
-                        { <div class="d-flex gap-8">
-                        <MudSelectExtended FullWidth="true" T="int" @bind-Value="currentTypeId">
+                        { 
+                            <MudItem xs="12">
+                                <MudContainer MaxWidth="MaxWidth.ExtraSmall">
+                                    <MudSelectExtended T="int" @bind-Value="currentTypeId">
+
+                                        @foreach (var variant in product.Variants)
+                                        {
+                                            <MudSelectItemExtended Value="@variant.ProductTypeId" Text=@($"{variant.ProductType.Name}              ")/>
+
+
+                                        }
+                                    </MudSelectExtended>
+                                </MudContainer>
+                            </MudItem>
                             
-                            @foreach (var variant in product.Variants)
-                            {
-                                <MudSelectItemExtended Value="@variant.ProductTypeId" Text=@($"{variant.ProductType.Name}              ")/>
-                                
-                                    
-                            }
-                        </MudSelectExtended>
-                        </div>
                         }
+                        <MudItem xs="12">
                         @if (GetSelectedVariant() != null)
                         {
                             @if (GetSelectedVariant().OriginalPrice > GetSelectedVariant().Price)
                             {
-                            <MudText Color="Color.Dark" Style="text-decoration: line-through">Original Price : @GetSelectedVariant().OriginalPrice</MudText>
+                            <MudText Align="Align.Center" Color="Color.Dark" Style="text-decoration: line-through">Original Price : @GetSelectedVariant().OriginalPrice</MudText>
                             }
                         }
-                    <MudText Typo="Typo.h6" Color="Color.Success">Price : @GetSelectedVariant().Price</MudText>
-                </MudStack>
+                        <MudText Align="Align.Center" Typo="Typo.h6" Color="Color.Success">Price : @GetSelectedVariant().Price</MudText>
 
-                </MudPaper>
-            </MudItem>
-    </MudGrid>
+                            </MudItem>
+
+
+
+
+
+            </MudGrid>
+    </MudPaper>
 }
 
 @code {
